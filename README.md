@@ -53,7 +53,7 @@ self.view.addSubview(textView)
 ```
 
 # Support
-If you have any question of feature request feel free to reach out on [Twitter](http://www.twitter.com/Makias) @Makias or on [Stack Overflow](http://stackoverflow.com) with the tag BSHighlightableTextView. If you find any bug please post an issue or submit a pull request.
+If you have any question of feature request feel free to reach out on [Twitter](http://www.twitter.com/Makias) [@Makias](http://www.twitter.com/Makias) or on [Stack Overflow](http://stackoverflow.com) with the tag BSHighlightableTextView. If you find any bug please post an issue or submit a pull request.
 
 # License
 
