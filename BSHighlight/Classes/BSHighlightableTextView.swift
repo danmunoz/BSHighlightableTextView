@@ -81,7 +81,6 @@ class BSHighlightableTextView: UITextView {
             attributed.addAttribute(NSBackgroundColorAttributeName, value: highlightTextColor, range: range)
         }
         self.attributedText = attributed
-        let algo = BSHighlightableTextView(aFrame: CGRect(x: 0, y: 0, width: 100, height: 100), aTextContainer: nil, highlightText: "Highlight", highlightColor: UIColor.red)
     }
     
     /**
