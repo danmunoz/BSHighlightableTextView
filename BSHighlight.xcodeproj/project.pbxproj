@@ -56,15 +56,23 @@
 		6EE89D531EB8DC8C00943F3C /* BSHighlight */ = {
 			isa = PBXGroup;
 			children = (
+				6EE89D681EB8E6A900943F3C /* Classes */,
 				6EE89D541EB8DC8C00943F3C /* AppDelegate.swift */,
 				6EE89D561EB8DC8C00943F3C /* ViewController.swift */,
 				6EE89D581EB8DC8C00943F3C /* Main.storyboard */,
 				6EE89D5B1EB8DC8C00943F3C /* Assets.xcassets */,
 				6EE89D5D1EB8DC8C00943F3C /* LaunchScreen.storyboard */,
 				6EE89D601EB8DC8C00943F3C /* Info.plist */,
-				6EE89D661EB8DCBC00943F3C /* BSHighlightableTextView.swift */,
 			);
 			path = BSHighlight;
+			sourceTree = "<group>";
+		};
+		6EE89D681EB8E6A900943F3C /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				6EE89D661EB8DCBC00943F3C /* BSHighlightableTextView.swift */,
+			);
+			name = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,6 +311,7 @@
 				6EE89D651EB8DC8C00943F3C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
