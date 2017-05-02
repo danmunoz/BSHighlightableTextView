@@ -46,6 +46,28 @@ class BSHighlightableTextView: UITextView {
         }
     }
     
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        customInit()
+    }
+    
+    init(aFrame: CGRect, aTextContainer: NSTextContainer?, highlightText: String?, highlightColor: UIColor?) {
+        super.init(frame: aFrame, textContainer: aTextContainer)
+        if let highlightText = highlightText {
+            self.highlightTextTitle = highlightText
+        }
+        if let highlightColor = highlightColor {
+            self.highlightTextColor = highlightColor
+        }
+        customInit()
+    }
+    
+    func customInit() {
+        addCustomMenu()
+        hightlightText()
+    }
+    
     /**
      
      Highlights the selected text based on the ranges stored on the 'highlightedRanges' array.
@@ -59,6 +81,7 @@ class BSHighlightableTextView: UITextView {
             attributed.addAttribute(NSBackgroundColorAttributeName, value: highlightTextColor, range: range)
         }
         self.attributedText = attributed
+        let algo = BSHighlightableTextView(aFrame: CGRect(x: 0, y: 0, width: 100, height: 100), aTextContainer: nil, highlightText: "Highlight", highlightColor: UIColor.red)
     }
     
     /**
@@ -152,10 +175,10 @@ class BSHighlightableTextView: UITextView {
         return indexArray
     }
     
-    override func draw(_ rect: CGRect) {
-        addCustomMenu()
-        hightlightText()
-    }
+//    override func draw(_ rect: CGRect) {
+//        addCustomMenu()
+//        hightlightText()
+//    }
 }
 
 extension NSRange{
