@@ -8,10 +8,24 @@
 
 import UIKit
 
+///A subclass of UITextView that can be easily highlighted.
+
 class BSHighlightableTextView: UITextView {
+    
+    ///The ranges highlited on the text.
+    
     private var highlightedRanges = [NSRange]()
+    
+    ///The text that will appear on the copy/paste menu.
+    
     private var highlightTextTitle = ""
+    
+    ///The color of the highlighted area.
+    
     private var highlightTextColor = UIColor.yellow
+    
+    ///The text that will appear on the copy/paste menu. Editable on Interface Builder
+    
     @IBInspectable var highlightTitle: String? {
         get {
             return highlightTextTitle
@@ -20,6 +34,9 @@ class BSHighlightableTextView: UITextView {
             highlightTextTitle = highlightTitle!
         }
     }
+    
+    ///The color of the highlighted area. Editable on Interface Builder
+    
     @IBInspectable var highlightColor: UIColor? {
         get {
             return highlightTextColor
@@ -29,6 +46,12 @@ class BSHighlightableTextView: UITextView {
         }
     }
     
+    /**
+     
+     Highlights the selected text based on the ranges stored on the 'highlightedRanges' array.
+     
+     */
+    
     private func hightlightText() {
         let attributed = NSMutableAttributedString(attributedString: self.attributedText)
         attributed.addAttribute(NSBackgroundColorAttributeName, value: UIColor.clear, range: NSRange(location: 0, length: attributed.length - 1))
@@ -37,6 +60,12 @@ class BSHighlightableTextView: UITextView {
         }
         self.attributedText = attributed
     }
+    
+    /**
+     
+     Adds the "Highlight" option to the menu. The text will vary depending on what was set on IB. Once a title is set it will persist through all other BSHighlightableTextView on the app.
+     
+     */
     
     private func addCustomMenu() {
         let text = highlightTextTitle.characters.count > 0 ? highlightTextTitle : "Highlight"
@@ -54,8 +83,14 @@ class BSHighlightableTextView: UITextView {
         }
     }
     
+    /**
+     
+     The method called when the user taps on the "highlight" option on the menu.
+     
+     */
+    
     func selectHighlightArea() {
-        let indexes = intersect()
+        let indexes = intersect(with: self.selectedRange)
         if indexes.count == 1 {
             if let newRange = highlightedRanges[indexes.first!].join(range2: self.selectedRange) {
                 highlightedRanges.remove(at: indexes.first!)
@@ -95,10 +130,21 @@ class BSHighlightableTextView: UITextView {
         self.hightlightText()
     }
     
-    private func intersect() -> [Int] {
+    /**
+     
+     Method that checks if the selected range intersects with one from the 'highlightedRanges' array.
+     
+     - Parameters:
+     - selectedRange: Selected NSRange of the UITextView
+     
+     - Returns: The indexes of the interesctions.
+     
+     */
+    
+    private func intersect(with selectedRange: NSRange) -> [Int] {
         var indexArray = [Int]()
         for (index, range) in highlightedRanges.enumerated() {
-            let intersection = NSIntersectionRange(self.selectedRange, range)
+            let intersection = NSIntersectionRange(selectedRange, range)
             if intersection.length > 0 {
                 indexArray.append(index)
             }
