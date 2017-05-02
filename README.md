@@ -5,8 +5,7 @@
 `BSHighlightableTextView` is an easy way to add highlight functionality to UITextView.
 
 <div align="center">
-    <img src="http://sberrevoets.github.io/SDCAlertView/ActionSheet.gif">
-    <img src="http://sberrevoets.github.io/SDCAlertView/Alert.gif">
+    
 </div>
 
 ## Features
