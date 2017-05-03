@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "BSHighlightableTextView"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "An easy way to add highlight functionality to UITextView."
   s.description  = <<-DESC
   If you ever wanted to add the highlight feature to a UITextView this if the easiest solution.
