@@ -12,6 +12,10 @@ import UIKit
 
 class BSHighlightableTextView: UITextView {
     
+    ///The view's identifier that will be used to persist highlighted ranges.
+    
+    private var viewIdentifier = ""
+    
     ///The ranges highlited on the text.
     
     private var highlightedRanges = [NSRange]()
@@ -23,6 +27,17 @@ class BSHighlightableTextView: UITextView {
     ///The color of the highlighted area.
     
     private var highlightTextColor = UIColor.yellow
+    
+    ///The identifier of the BSHighlightableTextView, this will be used for persistence.
+    
+    @IBInspectable var identifier: String? {
+        get {
+            return viewIdentifier
+        }
+        set(identifier) {
+            viewIdentifier = identifier!
+        }
+    }
     
     ///The text that will appear on the copy/paste menu. Editable on Interface Builder
     
@@ -50,6 +65,64 @@ class BSHighlightableTextView: UITextView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         customInit()
+        self.viewIdentifier = aDecoder.decodeObject(forKey: "viewIdentifier") as? String ?? ""
+        self.highlightedRanges = aDecoder.decodeObject(forKey: "highlightedRanges") as? [NSRange] ?? [NSRange]()
+        self.highlightTextTitle = aDecoder.decodeObject(forKey: "highlightTextTitle") as? String ?? ""
+        self.highlightTextColor = aDecoder.decodeObject(forKey: "highlightTextColor") as? UIColor ?? UIColor.yellow
+    }
+    
+    override func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.viewIdentifier, forKey: "viewIdentifier")
+        aCoder.encode(self.highlightedRanges, forKey: "highlightedRanges")
+        aCoder.encode(self.highlightTextTitle, forKey: "highlightTextTitle")
+        aCoder.encode(self.highlightTextColor, forKey: "highlightTextColor")
+    }
+    
+    /**
+     
+     Persists the BSHighlightableTextView object to Userdefaults
+     
+     */
+    
+    private func persist() {
+        if self.viewIdentifier.characters.count > 0 {
+            let data  = NSKeyedArchiver.archivedData(withRootObject: self)
+            UserDefaults.standard.set(data, forKey:"BSHighlight-" + self.viewIdentifier)
+        }
+    }
+    
+    /**
+     
+     Retrieves a BSHighlightableTextView object from UserDefaults
+     
+     - Returns: An initialized BSHighlightableTextView object (can be nil).
+     
+     */
+    
+    private func getPersistedData() -> BSHighlightableTextView? {
+        if self.viewIdentifier.characters.count > 0 {
+            guard let data = UserDefaults.standard.object(forKey: "BSHighlight-" + self.viewIdentifier) as? Data else { return nil }
+            let textView = NSKeyedUnarchiver.unarchiveObject(with: data) as? BSHighlightableTextView
+            return textView
+        }
+        else {
+            return nil
+        }
+    }
+    
+    func customInit() {
+        addCustomMenu()
+        hightlightText()
+    }
+    
+    override func draw(_ rect: CGRect) {
+        if let textView = getPersistedData() {
+            self.viewIdentifier = textView.viewIdentifier.replacingOccurrences(of: "BSHighlight-", with: "")
+            self.highlightedRanges = textView.highlightedRanges
+            self.highlightTextTitle = textView.highlightTextTitle
+            self.highlightTextColor = textView.highlightTextColor
+            hightlightText()
+        }
     }
     
     /**
@@ -77,11 +150,6 @@ class BSHighlightableTextView: UITextView {
         customInit()
     }
     
-    func customInit() {
-        addCustomMenu()
-        hightlightText()
-    }
-    
     /**
      
      Highlights the selected text based on the ranges stored on the 'highlightedRanges' array.
@@ -90,12 +158,14 @@ class BSHighlightableTextView: UITextView {
     
     private func hightlightText() {
         let attributed = NSMutableAttributedString(attributedString: self.attributedText)
-        attributed.addAttribute(NSBackgroundColorAttributeName, value: UIColor.clear, range: NSRange(location: 0, length: attributed.length - 1))
-        for range in highlightedRanges {
-            attributed.addAttribute(NSBackgroundColorAttributeName, value: highlightTextColor, range: range)
+        if attributed.length > 0 {
+            attributed.addAttribute(NSBackgroundColorAttributeName, value: UIColor.clear, range: NSRange(location: 0, length: attributed.length - 1))
+            for range in highlightedRanges {
+                attributed.addAttribute(NSBackgroundColorAttributeName, value: highlightTextColor, range: range)
+            }
+            self.attributedText = attributed
+            persist()
         }
-        self.attributedText = attributed
-        
     }
     
     /**
@@ -187,11 +257,7 @@ class BSHighlightableTextView: UITextView {
         }
         return indexArray
     }
-    
-//    override func draw(_ rect: CGRect) {
-//        addCustomMenu()
-//        hightlightText()
-//    }
+
 }
 
 extension NSRange{

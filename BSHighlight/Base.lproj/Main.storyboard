@@ -36,6 +36,9 @@
                                             </fragment>
                                         </attributedString>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="identifier" value="text1"/>
+                                        </userDefinedRuntimeAttributes>
                                     </textView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pf3-ap-zyg" customClass="BSHighlightableTextView" customModule="BSHighlight" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="291.5" width="311" height="291.5"/>
@@ -63,6 +66,7 @@ consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labor
                                             <userDefinedRuntimeAttribute type="color" keyPath="highlightColor">
                                                 <color key="value" red="0.46037946429999999" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="identifier" value="text2"/>
                                         </userDefinedRuntimeAttributes>
                                     </textView>
                                 </subviews>
