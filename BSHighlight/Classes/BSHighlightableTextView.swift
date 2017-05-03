@@ -52,6 +52,20 @@ class BSHighlightableTextView: UITextView {
         customInit()
     }
     
+    /**
+     
+     Creates a new text view with the specified text container, highlight text and highlight color.
+     
+     - Parameters:
+     - aFrame: The frame rectangle of the text view.
+     - aTextContainer: The text container to use for the receiver (can be nil).
+     - highlightText: The text that will appear on the menu item (can be nil).
+     - highlightColor: The color that will be displayed when highlighted (can be nil).
+     
+     - Returns: An initialized BSHighlightableTextView.
+     
+     */
+    
     init(aFrame: CGRect, aTextContainer: NSTextContainer?, highlightText: String?, highlightColor: UIColor?) {
         super.init(frame: aFrame, textContainer: aTextContainer)
         if let highlightText = highlightText {
@@ -81,6 +95,7 @@ class BSHighlightableTextView: UITextView {
             attributed.addAttribute(NSBackgroundColorAttributeName, value: highlightTextColor, range: range)
         }
         self.attributedText = attributed
+        
     }
     
     /**
@@ -156,8 +171,7 @@ class BSHighlightableTextView: UITextView {
      
      Method that checks if the selected range intersects with one from the 'highlightedRanges' array.
      
-     - Parameters:
-     - selectedRange: Selected NSRange of the UITextView
+     - Parameter selectedRange: Selected NSRange of the UITextView
      
      - Returns: The indexes of the interesctions.
      
