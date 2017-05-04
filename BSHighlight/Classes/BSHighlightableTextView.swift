@@ -132,6 +132,7 @@ class BSHighlightableTextView: UITextView {
      - Parameters:
      - aFrame: The frame rectangle of the text view.
      - aTextContainer: The text container to use for the receiver (can be nil).
+     - identifier: The BSHighlightableTextView object identifier, this name must be unique since this is used for persisting the highlighted state of the text view.
      - highlightText: The text that will appear on the menu item (can be nil).
      - highlightColor: The color that will be displayed when highlighted (can be nil).
      
@@ -139,8 +140,9 @@ class BSHighlightableTextView: UITextView {
      
      */
     
-    init(aFrame: CGRect, aTextContainer: NSTextContainer?, highlightText: String?, highlightColor: UIColor?) {
+    init(aFrame: CGRect, aTextContainer: NSTextContainer?, identifier: String!, highlightText: String?, highlightColor: UIColor?) {
         super.init(frame: aFrame, textContainer: aTextContainer)
+        self.identifier = identifier
         if let highlightText = highlightText {
             self.highlightTextTitle = highlightText
         }
