@@ -5,8 +5,8 @@
 `BSHighlightableTextView` is an easy way to add highlight functionality to UITextView.
 
 <div align="center">
-    <img src="https://raw.githubusercontent.com/danmunoz/danmunoz.github.io/master/Assets/BSHighlightableTextView/SC1.png" style="width: 50%; height: 50%">
-    <img src="https://raw.githubusercontent.com/danmunoz/danmunoz.github.io/master/Assets/BSHighlightableTextView/SC2.png" style="width: 50%; height: 50%">
+    <img src="https://raw.githubusercontent.com/danmunoz/danmunoz.github.io/master/Assets/BSHighlightableTextView/SC2.png" style="width: 20%; height: 20%">
+    <img src="https://raw.githubusercontent.com/danmunoz/danmunoz.github.io/master/Assets/BSHighlightableTextView/SC1.png" style="width: 20%; height: 20%">
 </div>
 
 ## Features
