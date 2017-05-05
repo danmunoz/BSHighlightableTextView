@@ -5,7 +5,8 @@
 `BSHighlightableTextView` is an easy way to add highlight functionality to UITextView.
 
 <div align="center">
-    
+    <img src="https://raw.githubusercontent.com/danmunoz/danmunoz.github.io/master/Assets/BSHighlightableTextView/SC1.png">
+    <img src="https://raw.githubusercontent.com/danmunoz/danmunoz.github.io/master/Assets/BSHighlightableTextView/SC2.png">
 </div>
 
 ## Features
@@ -17,7 +18,7 @@
 - [x] Works with attributted text without changing format
 - [x] Swift
 - [x] CocoaPods support
-- [ ] Persistence
+- [x] Persistence
 
 # Requirements
 
