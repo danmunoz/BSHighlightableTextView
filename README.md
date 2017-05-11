@@ -1,6 +1,6 @@
 # BSHighlightableTextView
 
-![CocoaPods](https://img.shields.io/badge/pod-v1.0.1-blue.svg)
+![CocoaPods](https://img.shields.io/badge/pod-v1.0.2-blue.svg)
 
 `BSHighlightableTextView` is an easy way to add highlight functionality to UITextView.
 
@@ -48,10 +48,12 @@ Then run `pod install`.
 ```swift
 //'highlightText' can be nil, the default value will be "Highlight".
 //'highlightColor' can be nil, the default value will be Yellow.
-let textView = BSHighlightableTextView(aFrame: CGRect(x: 0, y: 0, width: 100, height: 100), aTextContainer: nil, identifier: "myTextView1", highlightText: "Highlight", highlightColor: UIColor.red)
+let textView = BSHighlightableTextView(aFrame: CGRect(x: 0, y: 0, width: 100, height: 100), aTextContainer: nil, viewIdentifier: "myTextView1", highlightText: "Highlight", highlightColor: UIColor.red)
 self.view.addSubview(textView)
 
 ```
+
+If you user Interface Builder, just make sure to set the property "viewIdentifier". This is super important for persistence to work.
 
 # Support
 If you have any question of feature request feel free to reach out on [Twitter](http://www.twitter.com/Makias) [@Makias](http://www.twitter.com/Makias) or on [Stack Overflow](http://stackoverflow.com) with the tag BSHighlightableTextView. If you find any bug please post an issue or submit a pull request.
