@@ -12,7 +12,7 @@ import UIKit
 
 class BSHighlightableTextView: UITextView {
     
-    ///The view's identifier that will be used to persist highlighted ranges.
+    ///The view's viewIdentifier that will be used to persist highlighted ranges.
     
     private var viewIdentifier = ""
     
@@ -30,12 +30,12 @@ class BSHighlightableTextView: UITextView {
     
     ///The identifier of the BSHighlightableTextView, this will be used for persistence.
     
-    @IBInspectable var identifier: String? {
+    @IBInspectable var textViewidentifier: String? {
         get {
             return viewIdentifier
         }
-        set(identifier) {
-            viewIdentifier = identifier!
+        set(textViewidentifier) {
+            viewIdentifier = textViewidentifier!
         }
     }
     
@@ -132,7 +132,7 @@ class BSHighlightableTextView: UITextView {
      - Parameters:
      - aFrame: The frame rectangle of the text view.
      - aTextContainer: The text container to use for the receiver (can be nil).
-     - identifier: The BSHighlightableTextView object identifier, this name must be unique since this is used for persisting the highlighted state of the text view.
+     - viewIdentifier: The BSHighlightableTextView object identifier, this name must be unique since this is used for persisting the highlighted state of the text view.
      - highlightText: The text that will appear on the menu item (can be nil).
      - highlightColor: The color that will be displayed when highlighted (can be nil).
      
@@ -140,9 +140,9 @@ class BSHighlightableTextView: UITextView {
      
      */
     
-    init(aFrame: CGRect, aTextContainer: NSTextContainer?, identifier: String!, highlightText: String?, highlightColor: UIColor?) {
+    init(aFrame: CGRect, aTextContainer: NSTextContainer?, viewIdentifier: String!, highlightText: String?, highlightColor: UIColor?) {
         super.init(frame: aFrame, textContainer: aTextContainer)
-        self.identifier = identifier
+        self.viewIdentifier = viewIdentifier
         if let highlightText = highlightText {
             self.highlightTextTitle = highlightText
         }
