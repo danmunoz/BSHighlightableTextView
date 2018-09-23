@@ -8,7 +8,7 @@
 
 import UIKit
 
-///A subclass of UITextView that can be easily highlighted.
+///A UITextView subclass that can be easily highlighted.
 
 class BSHighlightableTextView: UITextView {
     
@@ -64,7 +64,7 @@ class BSHighlightableTextView: UITextView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        customInit()
+        self.customInit()
         self.viewIdentifier = aDecoder.decodeObject(forKey: "viewIdentifier") as? String ?? ""
         self.highlightedRanges = aDecoder.decodeObject(forKey: "highlightedRanges") as? [NSRange] ?? [NSRange]()
         self.highlightTextTitle = aDecoder.decodeObject(forKey: "highlightTextTitle") as? String ?? ""
@@ -85,7 +85,7 @@ class BSHighlightableTextView: UITextView {
      */
     
     private func persist() {
-        if self.viewIdentifier.characters.count > 0 {
+        if self.viewIdentifier.count > 0 {
             let data  = NSKeyedArchiver.archivedData(withRootObject: self)
             UserDefaults.standard.set(data, forKey:"BSHighlight-" + self.viewIdentifier)
         }
@@ -100,7 +100,7 @@ class BSHighlightableTextView: UITextView {
      */
     
     private func getPersistedData() -> BSHighlightableTextView? {
-        if self.viewIdentifier.characters.count > 0 {
+        if self.viewIdentifier.count > 0 {
             guard let data = UserDefaults.standard.object(forKey: "BSHighlight-" + self.viewIdentifier) as? Data else { return nil }
             let textView = NSKeyedUnarchiver.unarchiveObject(with: data) as? BSHighlightableTextView
             return textView
@@ -111,8 +111,8 @@ class BSHighlightableTextView: UITextView {
     }
     
     func customInit() {
-        addCustomMenu()
-        hightlightText()
+        self.addCustomMenu()
+        self.hightlightText()
     }
     
     override func draw(_ rect: CGRect) {
@@ -121,7 +121,7 @@ class BSHighlightableTextView: UITextView {
             self.highlightedRanges = textView.highlightedRanges
             self.highlightTextTitle = textView.highlightTextTitle
             self.highlightTextColor = textView.highlightTextColor
-            hightlightText()
+            self.hightlightText()
         }
     }
     
@@ -149,7 +149,7 @@ class BSHighlightableTextView: UITextView {
         if let highlightColor = highlightColor {
             self.highlightTextColor = highlightColor
         }
-        customInit()
+        self.customInit()
     }
     
     /**
@@ -161,12 +161,12 @@ class BSHighlightableTextView: UITextView {
     private func hightlightText() {
         let attributed = NSMutableAttributedString(attributedString: self.attributedText)
         if attributed.length > 0 {
-            attributed.addAttribute(NSBackgroundColorAttributeName, value: UIColor.clear, range: NSRange(location: 0, length: attributed.length - 1))
+            attributed.addAttribute(NSAttributedString.Key.backgroundColor, value: UIColor.clear, range: NSRange(location: 0, length: attributed.length - 1))
             for range in highlightedRanges {
-                attributed.addAttribute(NSBackgroundColorAttributeName, value: highlightTextColor, range: range)
+                attributed.addAttribute(NSAttributedString.Key.backgroundColor, value: highlightTextColor, range: range)
             }
             self.attributedText = attributed
-            persist()
+            self.persist()
         }
     }
     
@@ -177,7 +177,7 @@ class BSHighlightableTextView: UITextView {
      */
     
     private func addCustomMenu() {
-        let text = highlightTextTitle.characters.count > 0 ? highlightTextTitle : "Highlight"
+        let text = highlightTextTitle.count > 0 ? highlightTextTitle : "Highlight"
         let hightlight = UIMenuItem(title: text, action: #selector(self.selectHighlightArea))
         if UIMenuController.shared.menuItems == nil || UIMenuController.shared.menuItems?.count == 0 {
             UIMenuController.shared.menuItems = [hightlight]
@@ -198,7 +198,7 @@ class BSHighlightableTextView: UITextView {
      
      */
     
-    func selectHighlightArea() {
+    @objc func selectHighlightArea() {
         let indexes = intersect(with: self.selectedRange)
         if indexes.count == 1 {
             if let newRange = highlightedRanges[indexes.first!].join(range2: self.selectedRange) {
