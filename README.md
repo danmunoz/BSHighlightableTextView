@@ -1,6 +1,6 @@
 # BSHighlightableTextView
 
-![CocoaPods](https://img.shields.io/badge/pod-v1.0.2-blue.svg)
+![CocoaPods](https://img.shields.io/badge/pod-v1.0.6-blue.svg)
 
 `BSHighlightableTextView` is an easy way to add highlight functionality to UITextView.
 
@@ -22,7 +22,7 @@
 
 # Requirements
 
- - Swift 3
+ - Swift 4.2
  - iOS 9 or higher
 
 
