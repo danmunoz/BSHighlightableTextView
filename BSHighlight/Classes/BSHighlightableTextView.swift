@@ -161,9 +161,9 @@ class BSHighlightableTextView: UITextView {
     private func hightlightText() {
         let attributed = NSMutableAttributedString(attributedString: self.attributedText)
         if attributed.length > 0 {
-            attributed.addAttribute(NSAttributedString.Key.backgroundColor, value: UIColor.clear, range: NSRange(location: 0, length: attributed.length - 1))
+            attributed.addAttribute(.backgroundColor, value: UIColor.clear, range: NSRange(location: 0, length: attributed.length - 1))
             for range in highlightedRanges {
-                attributed.addAttribute(NSAttributedString.Key.backgroundColor, value: highlightTextColor, range: range)
+                attributed.addAttribute(.backgroundColor, value: highlightTextColor, range: range)
             }
             self.attributedText = attributed
             self.persist()
