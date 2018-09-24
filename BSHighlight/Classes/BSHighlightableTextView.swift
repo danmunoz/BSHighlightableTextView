@@ -12,6 +12,14 @@ import UIKit
 
 class BSHighlightableTextView: UITextView {
     
+    private enum Constants {
+        static let viewIdentifier: String = "viewIdentifier"
+        static let highlightedRanges: String = "highlightedRanges"
+        static let highlightTextTitle: String = "highlightTextTitle"
+        static let highlightTextColor: String = "highlightTextColor"
+        static let highlightTitle: String = "Highlight"
+    }
+    
     ///The view's viewIdentifier that will be used to persist highlighted ranges.
     
     private var viewIdentifier = ""
@@ -35,18 +43,24 @@ class BSHighlightableTextView: UITextView {
             return viewIdentifier
         }
         set(textViewidentifier) {
-            viewIdentifier = textViewidentifier!
+            guard let text = textViewidentifier else {
+                return
+            }
+            viewIdentifier = text
         }
     }
     
     ///The text that will appear on the copy/paste menu. Editable on Interface Builder
     
-    @IBInspectable var highlightTitle: String? {
+    @IBInspectable var highlightMenuTitle: String? {
         get {
             return highlightTextTitle
         }
         set(highlightTitle) {
-            highlightTextTitle = highlightTitle!
+            guard let text = highlightTitle else {
+                return
+            }
+            highlightTextTitle = text
         }
     }
     
@@ -57,25 +71,76 @@ class BSHighlightableTextView: UITextView {
             return highlightTextColor
         }
         set(highlightColor) {
-            highlightTextColor = highlightColor!
+            guard let color = highlightColor else {
+                return
+            }
+            highlightTextColor = color
         }
     }
     
+    /**
+     
+     Required init method.
+     
+     - Parameters:
+     - aDecoder: The coder used to encode the object properties.
+     
+     - Returns: An initialized BSHighlightableTextView.
+     
+     */
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.customInit()
-        self.viewIdentifier = aDecoder.decodeObject(forKey: "viewIdentifier") as? String ?? ""
-        self.highlightedRanges = aDecoder.decodeObject(forKey: "highlightedRanges") as? [NSRange] ?? [NSRange]()
-        self.highlightTextTitle = aDecoder.decodeObject(forKey: "highlightTextTitle") as? String ?? ""
-        self.highlightTextColor = aDecoder.decodeObject(forKey: "highlightTextColor") as? UIColor ?? UIColor.yellow
+        self.setup()
+        self.viewIdentifier = aDecoder.decodeObject(forKey: Constants.viewIdentifier) as? String ?? ""
+        self.highlightedRanges = aDecoder.decodeObject(forKey: Constants.highlightedRanges) as? [NSRange] ?? [NSRange]()
+        self.highlightTextTitle = aDecoder.decodeObject(forKey: Constants.highlightTextTitle) as? String ?? ""
+        self.highlightTextColor = aDecoder.decodeObject(forKey: Constants.highlightTextColor) as? UIColor ?? .yellow
+    }
+    
+    /**
+     
+     Creates a new text view with the specified text container, highlight text and highlight color.
+     
+     - Parameters:
+     - aFrame: The frame rectangle of the text view.
+     - aTextContainer: The text container to use for the receiver (can be nil).
+     - viewIdentifier: The BSHighlightableTextView object identifier, this name must be unique since this is used for persisting the highlighted state of the text view.
+     - highlightText: The text that will appear on the menu item (can be nil).
+     - highlightColor: The color that will be displayed when highlighted (can be nil).
+     
+     - Returns: An initialized BSHighlightableTextView.
+     
+     */
+    
+    init(aFrame: CGRect, aTextContainer: NSTextContainer?, viewIdentifier: String!, highlightText: String?, highlightColor: UIColor?) {
+        super.init(frame: aFrame, textContainer: aTextContainer)
+        self.viewIdentifier = viewIdentifier
+        if let highlightText = highlightText {
+            self.highlightTextTitle = highlightText
+        }
+        if let highlightColor = highlightColor {
+            self.highlightTextColor = highlightColor
+        }
+        self.setup()
     }
     
     override func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.viewIdentifier, forKey: "viewIdentifier")
-        aCoder.encode(self.highlightedRanges, forKey: "highlightedRanges")
-        aCoder.encode(self.highlightTextTitle, forKey: "highlightTextTitle")
-        aCoder.encode(self.highlightTextColor, forKey: "highlightTextColor")
+        aCoder.encode(self.viewIdentifier, forKey: Constants.viewIdentifier)
+        aCoder.encode(self.highlightedRanges, forKey: Constants.highlightedRanges)
+        aCoder.encode(self.highlightTextTitle, forKey: Constants.highlightTextTitle)
+        aCoder.encode(self.highlightTextColor, forKey: Constants.highlightTextColor)
+    }
+    
+    /**
+     
+     Setup method.
+     
+     */
+    
+    private func setup() {
+        self.addCustomMenu()
+        self.hightlightText()
     }
     
     /**
@@ -110,11 +175,6 @@ class BSHighlightableTextView: UITextView {
         }
     }
     
-    func customInit() {
-        self.addCustomMenu()
-        self.hightlightText()
-    }
-    
     override func draw(_ rect: CGRect) {
         if let textView = getPersistedData() {
             self.viewIdentifier = textView.viewIdentifier.replacingOccurrences(of: "BSHighlight-", with: "")
@@ -123,33 +183,6 @@ class BSHighlightableTextView: UITextView {
             self.highlightTextColor = textView.highlightTextColor
             self.hightlightText()
         }
-    }
-    
-    /**
-     
-     Creates a new text view with the specified text container, highlight text and highlight color.
-     
-     - Parameters:
-     - aFrame: The frame rectangle of the text view.
-     - aTextContainer: The text container to use for the receiver (can be nil).
-     - viewIdentifier: The BSHighlightableTextView object identifier, this name must be unique since this is used for persisting the highlighted state of the text view.
-     - highlightText: The text that will appear on the menu item (can be nil).
-     - highlightColor: The color that will be displayed when highlighted (can be nil).
-     
-     - Returns: An initialized BSHighlightableTextView.
-     
-     */
-    
-    init(aFrame: CGRect, aTextContainer: NSTextContainer?, viewIdentifier: String!, highlightText: String?, highlightColor: UIColor?) {
-        super.init(frame: aFrame, textContainer: aTextContainer)
-        self.viewIdentifier = viewIdentifier
-        if let highlightText = highlightText {
-            self.highlightTextTitle = highlightText
-        }
-        if let highlightColor = highlightColor {
-            self.highlightTextColor = highlightColor
-        }
-        self.customInit()
     }
     
     /**
@@ -172,23 +205,27 @@ class BSHighlightableTextView: UITextView {
     
     /**
      
-     Adds the "Highlight" option to the menu. The text will vary depending on what was set on IB. Once a title is set it will persist through all other BSHighlightableTextView on the app.
+     Adds the "Highlight" option to the menu. The text will vary depending on what was set on IB. Once a title is set it will persist through all other BSHighlightableTextView instances on the app.
      
      */
     
     private func addCustomMenu() {
-        let text = highlightTextTitle.count > 0 ? highlightTextTitle : "Highlight"
-        let hightlight = UIMenuItem(title: text, action: #selector(self.selectHighlightArea))
-        if UIMenuController.shared.menuItems == nil || UIMenuController.shared.menuItems?.count == 0 {
-            UIMenuController.shared.menuItems = [hightlight]
+        let title = !highlightTextTitle.isEmpty ? highlightTextTitle : Constants.highlightTitle
+        let hightlightMenuItem = UIMenuItem(title: title, action: #selector(BSHighlightableTextView.selectHighlightArea))
+        guard let menuItems = UIMenuController.shared.menuItems else {
+            UIMenuController.shared.menuItems = [hightlightMenuItem]
+            return
+        }
+        if menuItems.count == 0 {
+            UIMenuController.shared.menuItems = [hightlightMenuItem]
         }
         else {
-            for item in UIMenuController.shared.menuItems! {
+            for item in menuItems {
                 if item.action == #selector(selectHighlightArea) {
                     return
                 }
             }
-            UIMenuController.shared.menuItems?.append(hightlight)
+            UIMenuController.shared.menuItems?.append(hightlightMenuItem)
         }
     }
     
