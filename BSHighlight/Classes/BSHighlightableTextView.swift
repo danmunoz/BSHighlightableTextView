@@ -13,6 +13,7 @@ import UIKit
 class BSHighlightableTextView: UITextView {
     
     private enum Constants {
+        static let codingKey: String = "BSHighlight-"
         static let viewIdentifier: String = "viewIdentifier"
         static let highlightedRanges: String = "highlightedRanges"
         static let highlightTextTitle: String = "highlightTextTitle"
@@ -150,9 +151,9 @@ class BSHighlightableTextView: UITextView {
      */
     
     private func persist() {
-        if self.viewIdentifier.count > 0 {
+        if !self.viewIdentifier.isEmpty {
             let data  = NSKeyedArchiver.archivedData(withRootObject: self)
-            UserDefaults.standard.set(data, forKey:"BSHighlight-" + self.viewIdentifier)
+            UserDefaults.standard.set(data, forKey:Constants.codingKey + self.viewIdentifier)
         }
     }
     
@@ -166,7 +167,7 @@ class BSHighlightableTextView: UITextView {
     
     private func getPersistedData() -> BSHighlightableTextView? {
         if self.viewIdentifier.count > 0 {
-            guard let data = UserDefaults.standard.object(forKey: "BSHighlight-" + self.viewIdentifier) as? Data else { return nil }
+            guard let data = UserDefaults.standard.object(forKey: Constants.codingKey + self.viewIdentifier) as? Data else { return nil }
             let textView = NSKeyedUnarchiver.unarchiveObject(with: data) as? BSHighlightableTextView
             return textView
         }
@@ -177,7 +178,7 @@ class BSHighlightableTextView: UITextView {
     
     override func draw(_ rect: CGRect) {
         if let textView = getPersistedData() {
-            self.viewIdentifier = textView.viewIdentifier.replacingOccurrences(of: "BSHighlight-", with: "")
+            self.viewIdentifier = textView.viewIdentifier.replacingOccurrences(of: Constants.codingKey, with: "")
             self.highlightedRanges = textView.highlightedRanges
             self.highlightTextTitle = textView.highlightTextTitle
             self.highlightTextColor = textView.highlightTextColor
